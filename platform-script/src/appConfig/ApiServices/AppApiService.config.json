@@ -1,0 +1,19 @@
+{
+    "ServiceName": "My App API Service",
+    "GroupName": "SPA App Services",
+    "MetadataJson": "{\"Description\": \"My Angular App API service\"}",
+    "EnableADAuthentication": false,
+    "ConfigureProxy": true,
+    "ProxyConfiguration": [
+        {
+            "Key": "traefik.frontend.rule",
+            "Value": "PathPrefixStrip: /myapp"
+        }
+    ],
+    "ServeFiles": true,
+    "FilesConfig": {
+        "DefaultFile": "index.html",
+        "ApiUrlPrefix": "/api"
+    },
+    "StopRequested": false
+}
