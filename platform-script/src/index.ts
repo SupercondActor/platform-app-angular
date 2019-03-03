@@ -1,11 +1,16 @@
-// Entry points should be listed here. Otherwise that code branch will not be compiled into the JavaScript bundle.
-// (though you are free to use any other method to come up with the JavaScript bundle to be put into the Code Package for deployment)
 
-export class MyEntryPointsDefinition {
-    getAuthInfoAsync() {
-        // reading auth parameters from the Service Fabric Business Platform backend
-        return _SupercondActor.Config.getApiAuthConfigurationAsync();
-    };
-}
+// Entry point Types should be listed here.
+// This is how you connect your TypeScript code to your service's job script.
 
-(global as any).MyEntryPoints = new MyEntryPointsDefinition();
+// You can use any kind of coding style here, 
+// you just should be able to instantiate your entry point types 
+// in your service's job script at runtime.
+
+(global as any).MyServiceTypes = {
+    // It's OK to delare global types or immutable variables here, 
+    // BUT DON'T CREATE GLOBAL INSTANCES OR VARIABLES THAT CAN CHANGE -
+    // IT WILL LEAD TO MULTITHREADING PROBLEMS!!!
+
+    // There is nothing to declare for this example.
+    // the script is in the src/appConfig/ApiServices/AppApiService.job.js
+};

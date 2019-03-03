@@ -9,6 +9,6 @@ describe('workspace-project App', () => {
 
   it('should display welcome message', () => {
     page.navigateTo();
-    expect(page.getTitleText()).toEqual('Welcome to Service Fabric Business Platform!');
+    expect(page.getTitleText()).toEqual('Welcome to SupercondActor Business Platform!');
   });
 });

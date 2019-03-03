@@ -1,10 +1,8 @@
-// This is a mock context class for your testing. 
-// It replaces the run-time context object that will be injected by the Service Fabric Business Platform during execution of your code.
-// Feel free to change this mock to better suit your needs.
+/// <reference path="../../SupercondActorTypes.d.ts" />
 
 export class _SupercondActorMock implements SupercondActor.ISupercondActor {
     Logger: SupercondActor.IPlatformLogger = new SupercondActorLoggerMock();
-    Context: SupercondActor.IPlatformContext = new SupercondActorContextMock();
+    Service: SupercondActor.IPlatformContext = new SupercondActorContextMock();
     Config: SupercondActor.IPlatformConfig = new SupercondActorPlatformConfigMock();
 }
 
@@ -22,8 +20,10 @@ export class _SupercondActor_ResponseMock implements SupercondActor.IApiResponse
     contentType = 'application/json';
     statusCode = 200;
     setHeader(key: string, value: string | string[]): void {
+
     }
     setCookie(key: string, value: string, options: SupercondActor.IApiCookieOptions): void {
+
     }
 }
 
@@ -53,7 +53,10 @@ class SupercondActorPlatformConfigMock implements SupercondActor.IPlatformConfig
     }
     getApiAuthConfigurationAsync(): Promise<SupercondActor.IApiAuthConfiguration> {
         return new Promise((resolve, reject) => {
-            resolve({ tenantID: 'tenantid', clientID: 'clientid' });
+            resolve({
+                clientID: 'clientID-12345',
+                tenantID: 'tenantID-12345'
+            });
         });
     }
 }
@@ -96,8 +99,8 @@ class SupercondActorContextMock implements SupercondActor.IPlatformContext {
             }
         });
     }
-    getServiceDescriptorAsync(): Promise<SupercondActor.IScheduledServiceInfo> | Promise<SupercondActor.ILongRunningServiceInfo> | Promise<SupercondActor.IApiServiceInfo> {
-        return new Promise<SupercondActor.IApiServiceInfo>((resolve, reject) => {
+    getServiceDescriptorAsync(): Promise<any> {
+        return new Promise((resolve, reject) => {
             resolve(new SupercondActorServiceInfoMock());
         });
     }
@@ -118,12 +121,12 @@ class SupercondActorContextMock implements SupercondActor.IPlatformContext {
     }
     createOrUpdateApiServiceAsync(serviceConfig: SupercondActor.IApiServiceConfig, appUrl?: string): Promise<string> {
         return new Promise((resolve, reject) => {
-            resolve(serviceConfig.serviceUri);
+            resolve(serviceConfig.serviceID);
         });
     }
     createOrUpdateLongRunningServiceAsync(serviceConfig: SupercondActor.ILongRunningServiceConfig, appUrl?: string): Promise<string> {
         return new Promise((resolve, reject) => {
-            resolve(serviceConfig.serviceUri);
+            resolve(serviceConfig.serviceID);
         });
     }
     createOrUpdateScheduledServiceAsync(serviceConfig: SupercondActor.IScheduledServiceConfig, appUrl?: string): Promise<string> {
@@ -139,6 +142,11 @@ class SupercondActorContextMock implements SupercondActor.IPlatformContext {
     callScheduledServiceAsync(serviceID: string, paramJson: string, appUrl?: string): Promise<any> {
         return new Promise((resolve, reject) => {
             resolve('{}');
+        });
+    }
+    getApplicationsAsync(): Promise<SupercondActor.IApplicationInfo[]> {
+        return new Promise((resolve, reject) => {
+            resolve([]);
         });
     }
     createApplicationAsync(appUrl: string): Promise<string> {
@@ -175,7 +183,7 @@ class SupercondActorScheduledServiceConfigMock implements SupercondActor.ISchedu
     }
 }
 class SupercondActorApiServiceConfigMock implements SupercondActor.IApiServiceConfig {
-    serviceUri = 'mockServiceUri';
+    serviceID = 'mockServiceUri';
     serviceName = 'mockServiceName';
     groupName = 'mockGroupName';
     instanceCount = 1;
@@ -188,13 +196,13 @@ class SupercondActorApiServiceConfigMock implements SupercondActor.IApiServiceCo
     filesConfig = null;
     proxyConfiguration = [
         {
-            "Key": "traefik.frontend.rule",
-            "Value": "PathPrefixStrip: /api/v1"
+            "key": "traefik.frontend.rule",
+            "value": "PathPrefixStrip: /api/v1"
         }
     ]
 }
 class SupercondActorLongRunningServiceConfigMock implements SupercondActor.ILongRunningServiceConfig {
-    serviceUri = 'mockServiceUri';
+    serviceID = 'mockServiceUri';
     serviceName = 'mockServiceName';
     groupName = 'mockGroupName';
     instanceCount = 1;
@@ -205,7 +213,7 @@ class SupercondActorLongRunningServiceConfigMock implements SupercondActor.ILong
 class SupercondActorApiServiceStateMock implements SupercondActor.IApiServiceState {
     private srvConfig = new SupercondActorApiServiceConfigMock();
     platformState: SupercondActor.IStatelessServicePlatformState = {
-        serviceUri: this.srvConfig.serviceUri,
+        serviceUri: this.srvConfig.serviceID,
         serviceTypeName: 'mockServiceTypeName',
         serviceManifestVersion: '1.0.0',
         healthState: 0,
@@ -219,7 +227,7 @@ class SupercondActorApiServiceStateMock implements SupercondActor.IApiServiceSta
 class SupercondActorLongRunningServiceStateMock implements SupercondActor.ILongRunningServiceState {
     private srvConfig = new SupercondActorLongRunningServiceConfigMock();
     platformState: SupercondActor.IStatelessServicePlatformState = {
-        serviceUri: this.srvConfig.serviceUri,
+        serviceUri: this.srvConfig.serviceID,
         serviceTypeName: 'mockServiceTypeName',
         serviceManifestVersion: '1.0.0',
         healthState: 0,

@@ -5,7 +5,7 @@
 
 if (_SupercondActor_Request.url === '/api/auth') {
 
-    let authInfo = await MyEntryPoints.getAuthInfoAsync();
+    let authInfo = await _SupercondActor.Config.getApiAuthConfigurationAsync()
     console.log('Auth info from API service', authInfo);
     return authInfo;
 }
