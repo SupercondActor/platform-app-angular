@@ -13,6 +13,7 @@ export class _SupercondActor_RequestMock implements SupercondActor.IApiRequest {
     url = '';
     query = [];
     bodyJson = '{}';
+    authClaims = [];
 }
 
 export class _SupercondActor_ResponseMock implements SupercondActor.IApiResponse {
@@ -190,7 +191,15 @@ class SupercondActorApiServiceConfigMock implements SupercondActor.IApiServiceCo
     serviceScript = '';
     metadataJson = '{}';
     removalRequested = false;
-    enableADAuthentication = false;
+    apiAuthenticationType = 0;
+    apiAuthenticationConfig = {
+        "authority": "",
+        "validIssuers": [],
+        "validAudiences": [],
+        "disableIssuerValidation": false,
+        "disableAudienceValidation": false,
+        "disableLifetimeValidation": false
+    };
     configureProxy = true;
     serveFiles = false;
     filesConfig = null;

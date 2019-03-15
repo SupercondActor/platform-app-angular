@@ -2,7 +2,7 @@
     "ServiceName": "My App API Service",
     "GroupName": "SPA App Services",
     "MetadataJson": "{\"Description\": \"My Angular App API service\"}",
-    "EnableADAuthentication": false,
+    "ApiAuthenticationType": 0,
     "ConfigureProxy": true,
     "ProxyConfiguration": [
         {
